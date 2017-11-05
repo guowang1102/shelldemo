@@ -1,7 +1,5 @@
 package com.example;
 
-import java.security.NoSuchAlgorithmException;
-
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 
@@ -28,9 +26,7 @@ public class AES {
                 SecretKeySpec key = new SecretKeySpec(keyStr,"AES");
                 encryptCipher.init(Cipher.ENCRYPT_MODE,key);
                 decryptCipher.init(Cipher.DECRYPT_MODE,key);
-            } catch (NoSuchAlgorithmException e) {
-                e.printStackTrace();
-            } catch (Exception e) {
+            }  catch (Exception e) {
                 e.printStackTrace();
             }
     }

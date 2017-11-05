@@ -1,7 +1,9 @@
-package com.github.shell;
+package com.example;
 
+import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -9,6 +11,7 @@ import java.util.Enumeration;
 import java.util.zip.GZIPOutputStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
+import java.util.zip.ZipOutputStream;
 
 /**
  * function :
@@ -19,42 +22,46 @@ import java.util.zip.ZipFile;
 
 public class Zip {
 
-    public static void unZip(File zip,File dir){
-        try{
+    public static void unZip(File zip, File dir) {
+        try {
             dir.delete();
             ZipFile zipFile = new ZipFile(zip);
             Enumeration<? extends ZipEntry> entries = zipFile.entries();
-            while (entries.hasMoreElements()){
+            while (entries.hasMoreElements()) {
                 ZipEntry zipEntry = entries.nextElement();
                 String name = zipEntry.getName();
                 if (name.equals("META-INF/CERT.RSA")
-                        ||name.equals("META-INF/CERT.SF")
-                        ||name.equals("META-INF/MANIFEST.MF")){
+                        || name.equals("META-INF/CERT.SF")
+                        || name.equals("META-INF/MANIFEST.MF")) {
                     continue;
 
                 }
-                if(!zipEntry.isDirectory()){
-                    File file = new File(dir,name);
-                    if (!file.getParentFile().exists()){
+                if (!zipEntry.isDirectory()) {
+                    File file = new File(dir, name);
+                    if (!file.getParentFile().exists()) {
                         file.getParentFile().mkdirs();
                     }
                     FileOutputStream fos = new FileOutputStream(file);
                     InputStream is = zipFile.getInputStream(zipEntry);
                     byte[] buffer = new byte[1024];
                     int len;
-                    while ((len=is.read(buffer))!=-1){
-                        fos.write(buffer,0,len);
+                    while ((len = is.read(buffer)) != -1) {
+                        fos.write(buffer, 0, len);
                     }
                     is.close();
                     fos.close();
                 }
             }
             zipFile.close();
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
     }
+
+//    public static void zip(File apkDir, File unsignedApk) {
+//    }
+
 
     public static void zip(File srcFile, File desFile) throws IOException {
         GZIPOutputStream zos = null;

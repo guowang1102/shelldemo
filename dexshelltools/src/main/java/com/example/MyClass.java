@@ -4,14 +4,15 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 
 public class MyClass {
 
-    public static void main(String[] args) throws IOException, InterruptedException {
+    public static void main(String[] args) throws IOException, InterruptedException, NoSuchAlgorithmException {
 
         File aarFile = new File("dexshelltools/resource/shell-release.aar");
         File fakeFile = new File("dex/resource/tmp", "fakeDex");
-        //Zip.unZip(aarFile,fakeFile)  //解压
+        Zip.unZip(aarFile,fakeFile);  //解压
 
         File[] files = fakeFile.listFiles(new FilenameFilter() {
             @Override
@@ -86,14 +87,13 @@ public class MyClass {
 
         System.out.print("new main dex length:"+newDex.length);
 
-
         System.arraycopy(aarData,0,newDex,0,aarData.length);
         System.arraycopy(mainDexData,0,newDex,aarData.length,mainDexData.length);
 
         //拷贝main dex的长度
-        //Utils.changeFileSize(mainDexData,newDex,aarData);
-        //Utils.changeSignature(newDex)
-        //Utils.changeCheckSum(newDex)
+        Utils.changeFileSize(mainDexData,newDex,aarData);
+        Utils.changeSignature(newDex);
+        Utils.changeCheckSum(newDex);
 
         FileOutputStream fos = new FileOutputStream(mainDexFile);
         fos.write(newDex);
@@ -102,10 +102,10 @@ public class MyClass {
 
         File unsignedApk = new File("dexshelltools/resource/outputs/apk-unsigned.apk");
         unsignedApk.getParentFile().mkdirs();
-//        zip.zip(apkDir,unsignedApk);
+        Zip.zip(apkDir,unsignedApk);
 
         File signedApk = new File("dexshelltools/resource/outputs/apk-signed.apk");
-//        Signature.signature(unsignedApk,signedApk);
+        Signature.signature(unsignedApk,signedApk);
 
     }
 

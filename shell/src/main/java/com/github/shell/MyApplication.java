@@ -54,11 +54,11 @@ public class MyApplication extends Application {
                     }
 
                 } else if (name.endsWith(".dex")) {
-//                    byte[] decrptResult = AES.decrypt(mainDex);
-                    byte[] decryptResult = null;
-                    FileOutputStream fos;
+
                     try {
-                        fos = new FileOutputStream(file);
+                        byte[] bytes = Utils.getBytes(file);
+                        byte[] decryptResult = AES.decrypt(bytes);
+                        FileOutputStream fos = new FileOutputStream(file);
                         fos.write(decryptResult);
                         fos.flush();
                         fos.close();

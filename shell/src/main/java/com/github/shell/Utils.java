@@ -58,11 +58,17 @@ public class Utils {
         System.out.print("拷贝原来dex长度到新的额dex"+Utils.bytes2Int(bytes));
         System.arraycopy(Utils.int2Bytes(mainDexData.length),0,newDex,aarData.length+mainDexData.length,4);
 
+        System.out.println("更换dex 文件投长度信息...");
     }
 
     public static byte[] int2Bytes(int value)
     {
-        return null;
+        return new byte[]{
+                (byte) ((value >> 24) & 0xFF),
+                (byte) ((value >> 16) & 0xFF),
+                (byte) ((value >> 8) & 0xFF),
+                (byte) (value & 0xFF)
+        };
     }
 
 
